@@ -32,12 +32,14 @@ module AuthorizeNet
           bool.to_s
         end
       end
-  
-      # Coverts a value received from Authorize.Net into a BigDecimal.
-      def value_to_decimal(value)
-        value = 0 if value == '' # Ruby 2.4+ does not accept ""
-        BigDecimal.new(value)
-      end
+    end
+    
+    # Converts a value received from Authorize.Net into a BigDecimal.
+    def value_to_decimal(value)
+      value = "0" if value.to_s.empty?
+      value = value.gsub(/\D/, '') # Why is the solution_id of type BigDecimal?
+      BigDecimal.new(value)
+    end
   
       # Converts a BigDecimal (or Float) into an Authorize.Net float value string. If float isn't
       # a BigDecimal (or Float), its converted to a string and passed along.
